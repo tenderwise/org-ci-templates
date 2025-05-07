@@ -1,0 +1,20 @@
+# org-ci-templates/.github/workflows/dev-to-test.yml
+name: Dev to Test Promotion
+
+on:
+  workflow_call:
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - run: |
+          git config user.name "CI Bot"
+          git config user.email "ci@example.com"
+          git checkout test
+          git merge dev --no-ff -m "Auto-merge dev into test"
+          git push origin test
